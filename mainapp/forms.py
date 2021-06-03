@@ -6,12 +6,12 @@ from .models import Profile
 
 class RegisterForm(forms.ModelForm):
 
-    email = forms.CharField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-input'}))
+    email = forms.CharField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-input', 'placeholder': 'example@example.com'} ))
     phone_number = PhoneNumberField(
-        widget=PhoneNumberPrefixWidget(initial='RU')
+        widget=PhoneNumberPrefixWidget(initial='RU', attrs={'placeholder': 9999999999})
     )
 
     class Meta:
 
         model = Profile
-        fields = ['email', 'phone_number', 'messenger']
+        fields = ['email', 'phone_number']

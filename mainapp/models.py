@@ -10,8 +10,8 @@ class Messengers(models.Model):
 
 
 class Profile(models.Model):
-    email = models.EmailField()
-    phone_number = PhoneNumberField()
+    email = models.EmailField(unique=True)
+    phone_number = PhoneNumberField(unique=True)
     messenger = models.ForeignKey(Messengers, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
