@@ -29,8 +29,8 @@ class RegisterView(View):
             form.messenger = messenger
             form.save()
             form = RegisterForm()
-            return render(request, 'register.html', {'form': form})
-        return HttpResponse('Error')
+        return render(request, 'register.html', {'form': form})
+
 
 
 def index(request, room_name):
