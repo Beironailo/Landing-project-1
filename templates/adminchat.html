@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if user.is_superuser %}
+    {% if rooms %}
+    {% for room in rooms%}
+    <div><textarea readonly rows="3" cols="50" id = "{{room}}"></textarea>
+    <a href="{{room}}"><button>Answer</button></a>
+    {% endfor %}
+    </div>
+    {% else %}
+    <h2>Active rooms not found</h2>
+    {% endif %}
+    {{ rooms|json_script:"rooms" }}
+{% else %}
+<h2>Only for admins</h2>
+{% endif %}
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+<script>
+    const rooms = JSON.parse(document.getElementById('rooms').textContent);
+    for(var room in rooms){
+        document.querySelector('#' + room).value += rooms[room][0] + '('+ rooms[room][1] + '): ' + rooms[room][2];
+    }
+</script>
+</html>

@@ -5,6 +5,9 @@ import datetime
 
 class ChatConsumer(AsyncWebsocketConsumer):
     """Подключение пока по комнатам, надо сделать, чтобы как-то автоматом подключалось для каждого пользователя"""
+
+    rooms = dict()
+
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
@@ -14,7 +17,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -31,6 +33,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         now = datetime.datetime.now()
         now = now.strftime('%Y-%m-%d %H:%M:%S')
         user = str(self.user)
+        if user is 'AnonymousUser':
+            user = 'Guest'
+        if self.room_name not in self.rooms:
+            self.rooms[self.room_name] = {'log': []}
+        self.rooms[self.room_name]['log'].append((user, now, message))
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
@@ -54,6 +61,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'message': {
                     'message': message,
                     'time': now,
-                    'user': user
+                    'user': user,
+                    'channel_name': self.channel_name
                 },
         }))

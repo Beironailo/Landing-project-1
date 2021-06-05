@@ -4,6 +4,7 @@ from .forms import RegisterForm
 from .models import Messengers
 import json
 from django.utils.safestring import mark_safe
+from .consumers import ChatConsumer
 
 
 class RegisterView(View):
@@ -32,9 +33,20 @@ class RegisterView(View):
         return render(request, 'register.html', {'form': form})
 
 
-
 def index(request, room_name):
     """Страница чата"""
     """Комната для чата в форме http://127.0.0.1:8000/chat/s/"""
-    context = {'room_name_json': mark_safe(json.dumps(room_name))}
-    return render(request, 'userchat.html', context)
+    if room_name in ChatConsumer.rooms:
+        context = {'room_name_json': mark_safe(json.dumps(room_name)), 'log': ChatConsumer.rooms[room_name]['log']}
+        return render(request, 'userchat.html', context)
+    return render(request, 'userchat.html', {'room_name_json': mark_safe(json.dumps(room_name))})
+
+
+def admin_chat(request):
+    """Отправляю ссвлку на чат и последнее сообщение"""
+    rooms = ChatConsumer.rooms
+    room_names = {}
+    for room in rooms:
+        room_names[room] = rooms[room]["log"][-1]
+    context = {'rooms': room_names}
+    return render(request, 'adminchat.html', context)
