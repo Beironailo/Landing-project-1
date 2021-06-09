@@ -1,3 +1,4 @@
+
 .iframe-video
 {
 display: inline-block;
@@ -15,28 +16,41 @@ display: inline-block;
 
 }
 
-.chat-block{
+.form-block{
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif;
     display: flex;
   align-items: center;
   justify-content: center;
     height: 440px;
 
 }
+
 .input{
     float: right;
-    margin: 5px 30px 5px 0;
-    height: 40px;
+    display: inline-block;
     width: 240px;
-    background-color: rgba(200,200,200,1);
-    border: 0;
+
+    box-shadow: none;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    vertical-align: middle;
+
+
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #f1f1f1;
+    background-color: #f1f1f1;
+    transition: .2s ease-in-out;
+    color: #5a5a5a;
 }
+
 .form{
-    border-radius: 7px;
-display: block;
+    border-radius: 8px;
+    display:block;
     width: 420px;
     height: 284px;
 
-box-shadow: 0px 0px 20px rgba(121, 121, 121, 1);
+    box-shadow: 0px 0px 20px rgba(121, 121, 121, 1);
 
     background: white;
 
@@ -44,12 +58,15 @@ box-shadow: 0px 0px 20px rgba(121, 121, 121, 1);
 .text{
 
     margin: 0 0 0 0;
-
-
-    font-size: 45px;
+    color: #ffffff;
+    font-size: 42px;
+    font-family: 'Gilroy',Arial,sans-serif;
+    line-height: 1.55;
+    font-weight: 600;
+    background-position: center center;
+    border-color: transparent;
+    border-style: solid;
     text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    color: white;
     z-index: 20;
 }
 .green-block{
@@ -59,15 +76,90 @@ box-shadow: 0px 0px 20px rgba(121, 121, 121, 1);
     width: 500px;
     position: relative;
     left: 50%;
-    top: 55px;
+    top: 62px;
     z-index: -2;
     transform: translateX(-50%);
 }
-    .margin{
+.input-div{
+    color: #a9a9a9;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    line-height: 18px;
+    justify-content: space-between;
+    height: 48px;
+    width: 100%-56px;
+    padding: 0 28px;
 
-        margin: 0 0 0 0;
-        background: #1c1c1c;
-    }
+    font-size: 16px;
+
+
+}
+
+.button-container{
+
+    text-align: center;
+    text-decoration:none;
+ height: 60px;
+    display: flex;
+    justify-content: center;
+    padding:4px 28px;
+}
+.button-container>a{
+
+    font: 400 13.3333px Arial;
+    padding: 4px 0 8px 0;
+    margin: 0;
+        color: #fff;
+        transition: .3s linear;
+    display: inline-block;
+    text-decoration:none;
+
+    height: 100%-12px;
+    width: 100%;
+    font-size: 11px;
+}
+.facebook-button{
+    background: linear-gradient(180deg,#41a5fc 0,#0586ff);
+    border-radius: 5px 0 0 5px;
+}
+.facebook-button:hover{
+    background: linear-gradient(180deg,#41a5fc 0,#41a5fc);
+
+}
+.telegram-button{
+        background: linear-gradient(180deg,#20b1f5 0,#169fe3);
+}
+.telegram-button:hover{
+        background: linear-gradient(180deg,#20b1f5 0,#20b1f5);
+}
+.viber-button{
+
+    background: linear-gradient(180deg,#742ea6 0,#59267c);
+    border-radius: 0 5px 5px 0;
+}
+.viber-button:hover{
+
+    background: linear-gradient(180deg,#742ea6 0,#742ea6);
+}
+.icon{
+
+    width: 36px;
+    height: 36px;
+    margin: 0 auto;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 6px;
+}
+.checkbox{
+    
+}
+.margin{
+
+    margin: 0 0 0 0;
+    background: #1c1c1c;
+}
+
 /*  кнопка */
     .floating-button {
   text-decoration: none;
