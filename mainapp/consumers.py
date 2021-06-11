@@ -4,7 +4,6 @@ import datetime
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
-    """Подключение пока по комнатам, надо сделать, чтобы как-то автоматом подключалось для каждого пользователя"""
 
     rooms = dict()
 
@@ -33,7 +32,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         now = datetime.datetime.now()
         now = now.strftime('%Y-%m-%d %H:%M:%S')
         user = str(self.user)
-        if user is 'AnonymousUser':
+        if user == 'AnonymousUser':
             user = 'Guest'
         if self.room_name not in self.rooms:
             self.rooms[self.room_name] = {'log': []}
@@ -61,7 +60,61 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'message': {
                     'message': message,
                     'time': now,
+                    'user': user
+                },
+        }))
+
+
+class AdminChatConsumer(AsyncWebsocketConsumer):
+
+    async def connect(self):
+
+        self.room_group_name = 'admin_room'
+        self.user = self.scope['user']
+        await self.channel_layer.group_add(
+            self.room_group_name,
+            self.channel_name
+        )
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+        room = text_data_json['room']
+        now = datetime.datetime.now()
+        now = now.strftime('%Y-%m-%d %H:%M:%S')
+        user = str(self.user)
+        if user == 'AnonymousUser':
+            user = 'Guest'
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'room_catcher',
+                'message': {
+                    'message': message,
+                    'time': now,
                     'user': user,
-                    'channel_name': self.channel_name
+                    'room': room
+                },
+            }
+        )
+
+    async def room_catcher(self, event):
+        message = event['message']['message']
+        now = event['message']['time']
+        user = event['message']['user']
+        room = event['message']['room']
+        await self.send(text_data=json.dumps({
+            'message': {
+                    'message': message,
+                    'time': now,
+                    'user': user,
+                    'room': room
                 },
         }))
