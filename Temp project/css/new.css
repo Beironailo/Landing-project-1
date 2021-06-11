@@ -9,7 +9,7 @@ display: inline-block;
 
 }
 
-.block11{
+.block9{
 
     padding: 50px 20% 0px 21%;
     height: 222px;
@@ -25,24 +25,7 @@ display: inline-block;
 
 }
 
-.input{
-    float: right;
-    display: inline-block;
-    width: 240px;
 
-    box-shadow: none;
-    padding: 10px 15px;
-    box-sizing: border-box;
-    vertical-align: middle;
-
-
-    border-radius: 4px;
-    outline: none;
-    border: 1px solid #f1f1f1;
-    background-color: #f1f1f1;
-    transition: .2s ease-in-out;
-    color: #5a5a5a;
-}
 
 .form{
     border-radius: 8px;
@@ -83,6 +66,7 @@ display: inline-block;
 .input-div{
     color: #a9a9a9;
     font-weight: 400;
+
     display: flex;
     align-items: center;
     line-height: 18px;
@@ -94,6 +78,32 @@ display: inline-block;
     font-size: 16px;
 
 
+}
+.input{
+    float: right;
+    display: inline-block;
+    width: 240px;
+
+    box-shadow: none;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    vertical-align: middle;
+
+
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #f1f1f1;
+    background-color: #f1f1f1;
+    transition: .2s ease-in-out;
+    color: #5a5a5a;
+}
+.select{
+    z-index: 300;
+    position: relative;
+    top: 0px;
+    left: 43px;
+    border: 0;
+    background-color: #f1f1f1;
 }
 
 .button-container{
@@ -110,10 +120,11 @@ display: inline-block;
     font: 400 13.3333px Arial;
     padding: 4px 0 8px 0;
     margin: 0;
-        color: #fff;
-        transition: .3s linear;
+    color: #fff;
+
     display: inline-block;
     text-decoration:none;
+
 
     height: 100%-12px;
     width: 100%;
@@ -121,6 +132,7 @@ display: inline-block;
 }
 .facebook-button{
     background: linear-gradient(180deg,#41a5fc 0,#0586ff);
+    transition:.3s linear;
     border-radius: 5px 0 0 5px;
 }
 .facebook-button:hover{
@@ -129,6 +141,7 @@ display: inline-block;
 }
 .telegram-button{
         background: linear-gradient(180deg,#20b1f5 0,#169fe3);
+        transition: .3s linear;
 }
 .telegram-button:hover{
         background: linear-gradient(180deg,#20b1f5 0,#20b1f5);
@@ -136,6 +149,7 @@ display: inline-block;
 .viber-button{
 
     background: linear-gradient(180deg,#742ea6 0,#59267c);
+    transition: .3s linear;
     border-radius: 0 5px 5px 0;
 }
 .viber-button:hover{
@@ -151,9 +165,57 @@ display: inline-block;
     box-sizing: border-box;
     padding: 6px;
 }
-.checkbox{
-    
+.footer{
+
+    height: 46px;
+     width: 100%-19px;
+     padding: 0 19px;
+
 }
+.privacy{
+    height: 22px;
+    width: 100%;
+
+
+    color: #a9a9a9;
+    font-weight: 400;
+    font-size: 11px;
+
+
+
+}
+.inputcheckbox{
+    z-index:0;
+    display: none;
+
+}
+.inputcheckbox:checked + label::before{
+    background: linear-gradient(to bottom, #2a8ffa 0%, #5dc2ff 100%);
+    border-color: #2a8ffa;
+
+}
+
+
+.checkboxlabel::before{
+    content: '';
+    display: inline-block;
+    position: relative;
+    left: 0px;
+    top:0px;
+    z-index: 1;
+    width:17px;
+    height: 17px;
+    background: linear-gradient(180deg,#f0f0f0 0,#f5f5f5);
+    border: 1px solid #9d9d9d;
+    transition: 0.2s ease-in-out;
+    border-radius: 2px;
+
+
+
+
+}
+
+
 .margin{
 
     margin: 0 0 0 0;
