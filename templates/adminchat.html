@@ -1,31 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+
+    </style>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 {% if user.is_superuser %}
+
+<div id = "rooms_block">
     {% if rooms %}
     {% for room in rooms%}
-    <div><textarea readonly rows="3" cols="50" id = "{{room}}"></textarea>
-    <a href="{{room}}"><button>Answer</button></a>
-    {% endfor %}
+    <div><textarea readonly rows="3" cols="50" id = "room_{{room}}"></textarea>
+        <button id = "button_{{room}}" onclick="button_catch('{{room}}')">Open</button>
     </div>
-    {% else %}
-    <h2>Active rooms not found</h2>
+    {% endfor %}
     {% endif %}
-    {{ rooms|json_script:"rooms" }}
+</div>
+<div id = "admin-log"><textarea readonly id = "text-log" rows="40" cols="40"></textarea><br>
+<input id = "text-input" type="text" size = "30">
+<input id = "send-button" type="button" value="Send">
+
+{{ rooms|json_script:"rooms" }}
+</div>
 {% else %}
 <h2>Only for admins</h2>
 {% endif %}
-
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 <script>
+    var actual_room;
     const rooms = JSON.parse(document.getElementById('rooms').textContent);
-    for(var room in rooms){
-        document.querySelector('#' + room).value += rooms[room][0] + '('+ rooms[room][1] + '): ' + rooms[room][2];
+    if (rooms){
+        for(var room in rooms){
+            document.querySelector('#room_' + room).value += rooms[room][rooms[room].length - 1][0]
+            + '('+ rooms[room][rooms[room].length - 1][1] + '): '
+            + rooms[room][rooms[room].length - 1][2] +'\n';
+
+        }
     }
+    var adminSocket = new ReconnectingWebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+    );
+    var chatSocket = new ReconnectingWebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/pass'
+            )
+
+
+    adminSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log(data);
+        const room = data['message']['room'];
+        const message = data['message']['user']
+            + '(' + data['message']['time'] + '): '
+            + data['message']['message'];
+        if (room in rooms){
+            document.querySelector('#room_' + room).value = message;
+            rooms[room].push([data['message']['user'],data['message']['time'],data['message']['message']]);
+        }
+        else {
+        console.log("New room detected");
+        const rooms_field = document.getElementById("rooms_block");
+        const new_field = document.createElement("div"),
+              textarea = document.createElement("textarea");
+              button = document.createElement("button");
+        textarea.setAttribute('readonly', 'true');
+        textarea.setAttribute('rows', '3');
+        textarea.setAttribute('cols', '50');
+        textarea.setAttribute('id', "room_" + room);
+        textarea.appendChild(document.createTextNode(message));
+        button.setAttribute('id', "button_" + room);
+        button.setAttribute('onclick', "button_catch('" + room + "')");
+        button.appendChild(document.createTextNode("Open"));
+        new_field.appendChild(textarea);
+        new_field.appendChild(button);
+        rooms_field.appendChild(new_field);
+        rooms[room] = [[data['message']['user'],data['message']['time'],data['message']['message']]]
+        }
+        };
+    function button_catch(room){
+        actual_room = room;
+        document.querySelector('#text-input').focus();
+        chatSocket = new ReconnectingWebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + room +'/'
+            )
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const message = data['message']['user']
+            + '(' + data['message']['time'] + '): '
+            + data['message']['message'];
+            document.querySelector('#text-log').value += message + '\n';
+            document.querySelector('#room_' + room).value = message
+        };
+
+        document.querySelector('#text-log').value = '';
+        for (var i = 0; i < rooms[room].length; i++){
+            document.querySelector('#text-log').value += rooms[room][i][0]
+            + '('+ rooms[room][i][1] + '): ' + rooms[room][i][2] +'\n';
+            }
+        }
+
+    document.querySelector('#send-button').onclick = function(e) {
+        var messageInputDom = document.querySelector('#text-input');
+        var message = messageInputDom.value;
+        if (message != ''){
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        adminSocket.send(JSON.stringify({
+            'message': message
+        }));
+        messageInputDom.value = '';
+        }
+    };
+
+
+
+    document.querySelector('#text-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {
+            document.querySelector('#send-button').click();
+
+        }
+    };
 </script>
 </html>

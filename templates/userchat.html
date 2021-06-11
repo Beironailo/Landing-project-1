@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,12 +11,13 @@
 <input id = "text-input" type="text" size = "30">
 <input id = "send-button" type="button" value="Send">
 {{ log|json_script:"log" }}
+<div id="admin" data-source="body.html"></div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
+<script  src="{% static 'js/main.js' %}"></script>
 <script>
     const log = JSON.parse(document.getElementById('log').textContent);
     if (log){
-    console.log(log);
     for(let i = 0; i < log.length; i++){
         var message = log[i]
         document.querySelector('#chat-log').value += message[0] + '(' + message[1] + '): ' + message[2] + '\n';
@@ -22,23 +25,31 @@
     }
 
     const roomName = {{ room_name_json }}
-    console.log("{{user.username}}"+roomName)
-    const chatSocket = new ReconnectingWebSocket(
+
+    var adminSocket = new ReconnectingWebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+    );
+
+    var chatSocket = new ReconnectingWebSocket(
             'ws://'
             + window.location.host
             + '/ws/chat/'
             + roomName
             + '/'
         );
+    adminSocket.onmessage = function(e) {
+        console.log('arrived to admin');
+    };
     chatSocket.onmessage = function(e) {
+        console.log('arrived to chat');
         const data = JSON.parse(e.data);
         var message = data['message']['user']
         + '(' + data['message']['time'] + '): '
         + data['message']['message'];
-        console.log(data['message']['channel_name'])
         document.querySelector('#chat-log').value += message + '\n';
     };
-
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
@@ -57,8 +68,15 @@
         chatSocket.send(JSON.stringify({
             'message': message
         }));
+        adminSocket.send(JSON.stringify({
+            'message': message,
+            'room': roomName
+        }));
         messageInputDom.value = '';
         }
     };
+
 </script>
+
+
 </html>
