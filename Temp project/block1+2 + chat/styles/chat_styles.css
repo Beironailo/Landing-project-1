@@ -1,7 +1,7 @@
 
 .chat {
     color: #fff;
-    background-color: #1c1c1c;
+    background-color: #242424;
     border: 1px solid #0db79b;
     border-radius: 10px;
 
@@ -74,6 +74,8 @@ input[name = message] {
 
 #submit > svg {
     vertical-align: middle;
+    height: 45px;
+    width: 45px;
 }
 
 .message-right {
