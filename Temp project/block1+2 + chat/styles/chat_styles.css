@@ -86,7 +86,7 @@ input[name = message] {
     padding: 5px;
     align-self: flex-end;
     word-wrap: break-word;
-    margin: 3px;
+    margin: 3px 3px 6px;
     text-align: start;
 }
 
@@ -98,6 +98,6 @@ input[name = message] {
     padding: 5px;
     align-self: flex-start;
     word-wrap: break-word;
-    margin: 3px;
+    margin: 3px 3px 6px;
     text-align: start;
 }

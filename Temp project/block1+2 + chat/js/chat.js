@@ -1,6 +1,13 @@
 let ws;
 let url;
 
+let json = {
+    date: "23:23",
+    text: "message_text"
+}
+
+console.log(JSON.stringify(json));
+
 
 
 function initWebSocket() {
