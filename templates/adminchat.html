@@ -32,7 +32,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script>
 <script>
-    var actual_room;
     const rooms = JSON.parse(document.getElementById('rooms').textContent);
     if (rooms){
         for(var room in rooms){
@@ -58,15 +57,13 @@
         const data = JSON.parse(e.data);
         console.log(data);
         const room = data['message']['room'];
-        const message = data['message']['user']
-            + '(' + data['message']['time'] + '): '
-            + data['message']['message'];
+        const message = '(' + data['message']['time'] + '): '
+            + data['message']['text'];
         if (room in rooms){
             document.querySelector('#room_' + room).value = message;
             rooms[room].push([data['message']['user'],data['message']['time'],data['message']['message']]);
         }
         else {
-        console.log("New room detected");
         const rooms_field = document.getElementById("rooms_block");
         const new_field = document.createElement("div"),
               textarea = document.createElement("textarea");
@@ -86,7 +83,6 @@
         }
         };
     function button_catch(room){
-        actual_room = room;
         document.querySelector('#text-input').focus();
         chatSocket = new ReconnectingWebSocket(
             'ws://'
@@ -96,9 +92,8 @@
             )
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            const message = data['message']['user']
-            + '(' + data['message']['time'] + '): '
-            + data['message']['message'];
+            const message = '(' + data['message']['time'] + '): '
+            + data['message']['text'];
             document.querySelector('#text-log').value += message + '\n';
             document.querySelector('#room_' + room).value = message
         };
@@ -117,14 +112,9 @@
         chatSocket.send(JSON.stringify({
             'message': message
         }));
-        adminSocket.send(JSON.stringify({
-            'message': message
-        }));
         messageInputDom.value = '';
         }
     };
-
-
 
     document.querySelector('#text-input').onkeyup = function(e) {
         if (e.keyCode === 13) {

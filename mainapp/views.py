@@ -33,29 +33,20 @@ class RegisterView(View):
         return render(request, 'register.html', {'form': form})
 
 
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
-
-
 def index(request, room_name):
     """Страница чата"""
     """Комната для чата в форме http://127.0.0.1:8000/chat/s/"""
-    if room_name in ChatConsumer.rooms:
-        context = {'room_name_json': mark_safe(json.dumps(room_name)), 'log': ChatConsumer.rooms[room_name]['log']}
-        return render(request, 'userchat.html', context)
-    return render(request, 'userchat.html', {'room_name_json': mark_safe(json.dumps(room_name))})
+    # if room_name in ChatConsumer.rooms:
+    #     context = {'room_name_json': mark_safe(json.dumps(room_name)), 'log': ChatConsumer.rooms[room_name]['log']}
+    #     return render(request, 'userchat.html', context)
+    return render(request, 'userchat.html', {'room_name': mark_safe(json.dumps(room_name))})
 
 
 def admin_chat(request):
     """Отправляю ссвлку на чат и последнее сообщение"""
-    rooms = ChatConsumer.rooms
+    # rooms = ChatConsumer.rooms
     room_names = {}
-    for room in rooms:
-        room_names[room] = rooms[room]["log"]
+    # for room in rooms:
+    #     room_names[room] = rooms[room]["log"]
     context = {'rooms': room_names}
     return render(request, 'adminchat.html', context)
