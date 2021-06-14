@@ -1,22 +1,33 @@
 let ws;
 let url;
 
+let json = {
+    date: "23:23",
+    text: "message_text"
+}
+
+console.log(JSON.stringify(json));
+
+
+
 function initWebSocket() {
     try {
         ws = new WebSocket(url);
+        console.log("WebSocket: ok" + url);
     } catch (e) {
         console.log(e.message);
     }
 }
 
 function addMessage(message) {
-    let tag = "<div class=\"message-right\">" + message + "</div>";
-    console.log(tag);
+    if (message.length !== 0) {
+        let tag = "<div class=\"message-right\">" + message + "</div>";
+        console.log(tag);
 
-    let container = document.querySelector("#message_container");
-    container.innerHTML += tag;
-    container.scrollTop = container.scrollHeight;
-
+        let container = document.querySelector("#message_container");
+        container.innerHTML += tag;
+        container.scrollTop = container.scrollHeight;
+    }
 }
 
 function addMessageList(messages) {
@@ -28,8 +39,9 @@ function addMessageList(messages) {
 document.querySelector("#submit").
         addEventListener("click", function () {
 
-            let message = document.querySelector("#message_input").value;
-            addMessage(message);
+            let input = document.querySelector("#message_input");
+            addMessage(input.value);
+            input.value = "";
         });
 
 document.querySelector(".close_button").
