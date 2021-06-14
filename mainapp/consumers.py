@@ -45,10 +45,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         now = event['time']
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': {
-                    'text': message,
-                    'time': now,
-                },
+               'text': message,
+               'time': now,
+
         }))
 
 
@@ -93,9 +92,7 @@ class AdminChatConsumer(AsyncWebsocketConsumer):
         room = event['room']
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': {
                 'text': message,
                 'time': now,
                 'room': room
-            },
         }))

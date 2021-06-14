@@ -36,7 +36,7 @@
         console.log('arrived to chat');
         const data = JSON.parse(e.data);
         console.log(data);
-        var message = data['message']['text'] + '(' + data['message']['time'] + ')';
+        var message = data['text'] + '(' + data['time'] + ')';
         document.querySelector('#chat-log').value += message + '\n';
     };
     chatSocket.onclose = function(e) {

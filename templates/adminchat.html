@@ -56,12 +56,12 @@
     adminSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
         console.log(data);
-        const room = data['message']['room'];
-        const message = '(' + data['message']['time'] + '): '
-            + data['message']['text'];
+        const room = data['room'];
+        const message = '(' + data['time'] + '): '
+            + data['text'];
         if (room in rooms){
             document.querySelector('#room_' + room).value = message;
-            rooms[room].push([data['message']['user'],data['message']['time'],data['message']['message']]);
+            rooms[room].push(data['time'],data['text']);
         }
         else {
         const rooms_field = document.getElementById("rooms_block");
@@ -79,7 +79,7 @@
         new_field.appendChild(textarea);
         new_field.appendChild(button);
         rooms_field.appendChild(new_field);
-        rooms[room] = [[data['message']['user'],data['message']['time'],data['message']['message']]]
+        rooms[room] = [[data['time'],data['text']]]
         }
         };
     function button_catch(room){
@@ -92,16 +92,16 @@
             )
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            const message = '(' + data['message']['time'] + '): '
-            + data['message']['text'];
+            const message = '(' + data['time'] + '): '
+            + data['text'];
             document.querySelector('#text-log').value += message + '\n';
             document.querySelector('#room_' + room).value = message
         };
 
         document.querySelector('#text-log').value = '';
         for (var i = 0; i < rooms[room].length; i++){
-            document.querySelector('#text-log').value += rooms[room][i][0]
-            + '('+ rooms[room][i][1] + '): ' + rooms[room][i][2] +'\n';
+            document.querySelector('#text-log').value += rooms[room][i][1]
+            + '('+ rooms[room][i][0] + '): ' + '\n';
             }
         }
 
