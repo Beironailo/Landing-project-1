@@ -117,7 +117,7 @@ display: inline-block;
     justify-content: center;
     padding:4px 28px;
 }
-.button-container>a{
+.button-container>button{
 
     font: 400 13.3333px Arial;
     padding: 4px 0 8px 0;
