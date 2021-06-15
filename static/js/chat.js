@@ -144,7 +144,6 @@ document.querySelector(".chat_icon")
         if (userWebSocket == null) {
 
             const fingerprint = FingerprintJS.load();
-            let visitorId;
             fingerprint
                 .then(fingerprint => fingerprint.get())
                 .then(result => {
