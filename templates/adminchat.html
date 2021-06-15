@@ -51,17 +51,19 @@
             + window.location.host
             + '/ws/chat/pass'
             )
-
+    chatSocket.onopen = function(e) {
+        console.log("connect");
+    }
 
     adminSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
         console.log(data);
         const room = data['room'];
-        const message = '(' + data['time'] + '): '
+        const message = data['user'] + '(' + data['time'] + '): '
             + data['text'];
         if (room in rooms){
             document.querySelector('#room_' + room).value = message;
-            rooms[room].push(data['time'],data['text']);
+            rooms[room].push(data['user'],data['time'],data['text']);
         }
         else {
         const rooms_field = document.getElementById("rooms_block");
@@ -79,9 +81,10 @@
         new_field.appendChild(textarea);
         new_field.appendChild(button);
         rooms_field.appendChild(new_field);
-        rooms[room] = [[data['time'],data['text']]]
+        rooms[room] = [[data['user'],data['time'],data['text']]];
         }
         };
+
     function button_catch(room){
         document.querySelector('#text-input').focus();
         chatSocket = new ReconnectingWebSocket(
@@ -92,16 +95,17 @@
             )
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            const message = '(' + data['time'] + '): '
+            const message = data['user'] + '(' + data['time'] + '): '
             + data['text'];
             document.querySelector('#text-log').value += message + '\n';
-            document.querySelector('#room_' + room).value = message
+            document.querySelector('#room_' + room).value = message;
         };
 
         document.querySelector('#text-log').value = '';
+        console.log(rooms[room])
         for (var i = 0; i < rooms[room].length; i++){
-            document.querySelector('#text-log').value += rooms[room][i][1]
-            + '('+ rooms[room][i][0] + '): ' + '\n';
+            document.querySelector('#text-log').value +=rooms[room][i][0] + '('+ rooms[room][i][1]+'): '
+             + rooms[room][i][2] + '\n';
             }
         }
 
@@ -110,7 +114,7 @@
         var message = messageInputDom.value;
         if (message != ''){
         chatSocket.send(JSON.stringify({
-            'message': message
+            'text': message
         }));
         messageInputDom.value = '';
         }

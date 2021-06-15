@@ -13,7 +13,7 @@ class RegisterView(View):
     def get(self, request, *args, **kwargs):
         form = RegisterForm(request.POST)
         context = {'form': form}
-        return render(request, 'register.html', context)
+        return render(request, 'index.html', context)
 
     def post(self, request, *args, **kwargs):
         form = RegisterForm(request.POST or None)
@@ -30,7 +30,7 @@ class RegisterView(View):
             form.messenger = messenger
             form.save()
             form = RegisterForm()
-        return render(request, 'register.html', {'form': form})
+        return render(request, 'index.html', {'form': form})
 
 
 def index(request, room_name):
@@ -39,7 +39,7 @@ def index(request, room_name):
     # if room_name in ChatConsumer.rooms:
     #     context = {'room_name_json': mark_safe(json.dumps(room_name)), 'log': ChatConsumer.rooms[room_name]['log']}
     #     return render(request, 'userchat.html', context)
-    return render(request, 'userchat.html', {'room_name': mark_safe(json.dumps(room_name))})
+    return render(request, 'index.html', {'room_name': mark_safe(json.dumps(room_name))})
 
 
 def admin_chat(request):
