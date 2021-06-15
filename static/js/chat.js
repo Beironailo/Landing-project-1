@@ -32,13 +32,7 @@ function initWebSocket(url) {
 
             let eventObject = JSON.parse(event.data);
 
-            let text = eventObject.text;
-            let date = eventObject.date;
-
-            addMessage({
-                date: date,
-                text: text
-            },  "L");
+            addMessage(eventObject);
 
         }
 
@@ -49,38 +43,14 @@ function initWebSocket(url) {
     }
 }
 
-function addMessage(message, source) {
+function addMessage(message) {
 
     if (message.text.length !== 0) {
 
         let tag;
-        if (source === "R") {
+        if (message.user === "Guest") {
 
-            try {
-
-                let json = {
-                    date: message.date,
-                    text: message.text
-                }
-                let adminJson = {
-                    date: message.date,
-                    text: message.text,
-                    room: document.querySelector("#room_name").innerHTML.trim()
-                }
-
-                userWebSocket.send( JSON.stringify(json) );
-                adminWebSocket.send( JSON.stringify(adminJson) );
-
-                console.log( JSON.stringify(json) )
-                console.log( JSON.stringify(adminJson) );
-
-                tag = "<div class=\"message-right\">" + message.text + "</div>";
-
-            } catch (e) {
-
-                console.log(e.message);
-
-            }
+            tag = "<div class=\"message-right\">" + message.text + "</div>";
 
         } else {
 
@@ -100,10 +70,35 @@ document.querySelector("#submit")
 
         let input = document.querySelector("#message_input");
         let now = new Date();
-        addMessage({
+
+        let message = {
             date: now.getHours().toString() + ":" + now.getMinutes().toString(),
             text: input.value
-        }, "R");
+        };
+        let json = {
+            date: message.date,
+            text: message.text
+        }
+        let adminJson = {
+            date: message.date,
+            text: message.text,
+            room: document.querySelector("#room_name").innerHTML.trim()
+        }
+
+        try {
+
+            userWebSocket.send( JSON.stringify(json) );
+            adminWebSocket.send( JSON.stringify(adminJson) );
+
+        } catch (e) {
+
+            console.log(e.message);
+
+        }
+
+        console.log( JSON.stringify(json) )
+        console.log( JSON.stringify(adminJson) );
+
         input.value = "";
 
     });
