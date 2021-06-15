@@ -1,25 +1,28 @@
 let userWebSocket;
-let adminWebSocket
+let adminWebSocket;
 
 function initWebSocket(url) {
 
     try {
 
         userWebSocket = new WebSocket(url);
+        adminWebSocket = new WebSocket(
+            "ws://" + window.location.host + "/ws/chat/"
+        );
 
-        userWebSocket.onopen = function () {
+        adminWebSocket.onopen = userWebSocket.onopen = function () {
 
             console.log("WebSocket opened");
 
         }
 
-        userWebSocket.onclose = function (event) {
+        adminWebSocket.onclose = userWebSocket.onclose = function (event) {
 
             console.log("WebSocket closed: " + event.code);
 
         }
 
-        userWebSocket.onerror = function (error) {
+        adminWebSocket.onerror = userWebSocket.onerror = function (error) {
 
             console.log("WebSocket died:" + error.message);
 
@@ -30,7 +33,10 @@ function initWebSocket(url) {
             let text = event.data.text;
             let date = event.data.date;
 
-            addMessage(text,  "L");
+            addMessage({
+                date: date,
+                text: text
+            },  "L");
 
         }
 
@@ -54,8 +60,17 @@ function addMessage(message, source) {
                     date: message.date,
                     text: message.text
                 }
+                let adminJson = {
+                    date: message.date,
+                    text: message.text,
+                    room: document.querySelector("#room_name").innerHTML.trim()
+                }
 
                 userWebSocket.send( JSON.stringify(json) );
+                adminWebSocket.send( JSON.stringify(adminJson) );
+
+                console.log( JSON.stringify(json) )
+                console.log( JSON.stringify(adminJson) );
 
                 tag = "<div class=\"message-right\">" + message.text + "</div>";
 
@@ -123,12 +138,12 @@ document.querySelector(".chat_icon")
     .addEventListener("click", function () {
 
         if (userWebSocket == null) {
-            let room = document.querySelector("#room_name").innerHTML;
-            let url = "ws://"
+            let room = document.querySelector("#room_name").innerHTML.trim();
+            let url = 'ws://'
                 + window.location.host
-                + "/ws/chat/"
+                + '/ws/chat/'
                 + room
-                + "/"
+                + '/'
 
             console.log(url);
             initWebSocket(url);
