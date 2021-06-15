@@ -70,8 +70,12 @@ document.querySelector("#submit")
 
         let input = document.querySelector("#message_input");
         let now = new Date();
+<<<<<<< HEAD
         let room = document.querySelector("#room_name").innerHTML.trim();
         room = room.slice(1, room.length-1);
+=======
+
+>>>>>>> 2156b3aad586335349f70f99d117b1fef7778dc9
         let message = {
             date: now.getHours().toString() + ":" + now.getMinutes().toString(),
             text: input.value
@@ -83,7 +87,11 @@ document.querySelector("#submit")
         let adminJson = {
             date: message.date,
             text: message.text,
+<<<<<<< HEAD
             room: room
+=======
+            room: document.querySelector("#room_name").innerHTML.trim()
+>>>>>>> 2156b3aad586335349f70f99d117b1fef7778dc9
         }
 
         try {
@@ -137,7 +145,10 @@ document.querySelector(".chat_icon")
 
         if (userWebSocket == null) {
             let room = document.querySelector("#room_name").innerHTML.trim();
+<<<<<<< HEAD
             room = room.slice(1, room.length-1);
+=======
+>>>>>>> 2156b3aad586335349f70f99d117b1fef7778dc9
             let url = 'ws://'
                 + window.location.host
                 + '/ws/chat/'
@@ -154,4 +165,8 @@ document.querySelector(".chat_icon")
         chat.style.display = "";
         button.style.display = "flex";
 
+<<<<<<< HEAD
     });
+=======
+    });
+>>>>>>> 2156b3aad586335349f70f99d117b1fef7778dc9
