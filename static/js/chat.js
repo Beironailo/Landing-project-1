@@ -1,5 +1,13 @@
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
+
 let userWebSocket;
 let adminWebSocket;
+
+function initFingerprint() {
+    const fp = FingerprintJS.load();
+
+    fp.then(fp => fp.get()).then(result => result);
+}
 
 function initWebSocket(url) {
 
@@ -7,7 +15,7 @@ function initWebSocket(url) {
 
         userWebSocket = new WebSocket(url);
         adminWebSocket = new WebSocket(
-            "ws://" + window.location.host + "/ws/chat/"
+            "wss://" + window.location.host + "/ws/chat/"
         );
 
         adminWebSocket.onopen = userWebSocket.onopen = function () {
@@ -137,16 +145,25 @@ document.querySelector(".chat_icon")
     .addEventListener("click", function () {
 
         if (userWebSocket == null) {
-            let room = document.querySelector("#room_name").innerHTML.trim();
-            room = room.slice(1, room.length-1);
-            let url = 'ws://'
-                + window.location.host
-                + '/ws/chat/'
-                + room
-                + '/'
 
-            console.log(url);
-            initWebSocket(url);
+            const fingerprint = FingerprintJS.load();
+            let visitorId;
+            fingerprint
+                .then(fingerprint => fingerprint.get())
+                .then(result => {
+                    let visitorId = result.visitorId;
+
+                    let url = 'ws://'
+                        + window.location.host
+                        + '/ws/chat/'
+                        + visitorId
+                        + '/'
+
+                    console.log(url);
+                    initWebSocket(url);
+
+                });
+
         }
 
         let chat = document.querySelector(".chat");
