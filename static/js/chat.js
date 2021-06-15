@@ -1,7 +1,6 @@
-import FingerprintJS from "@fingerprintjs/fingerprintjs";
-
 let userWebSocket;
 let adminWebSocket;
+let visitorId;
 
 function initFingerprint() {
     const fp = FingerprintJS.load();
@@ -78,8 +77,6 @@ document.querySelector("#submit")
 
         let input = document.querySelector("#message_input");
         let now = new Date();
-        let room = document.querySelector("#room_name").innerHTML.trim();
-        room = room.slice(1, room.length-1);
 
         let message = {
             date: now.getHours().toString() + ":" + now.getMinutes().toString(),
@@ -92,7 +89,7 @@ document.querySelector("#submit")
         let adminJson = {
             date: message.date,
             text: message.text,
-            room: room
+            room: visitorId
         }
 
         try {
@@ -151,9 +148,9 @@ document.querySelector(".chat_icon")
             fingerprint
                 .then(fingerprint => fingerprint.get())
                 .then(result => {
-                    let visitorId = result.visitorId;
+                    visitorId = result.visitorId;
 
-                    let url = 'ws://'
+                    let url = 'wss://'
                         + window.location.host
                         + '/ws/chat/'
                         + visitorId
