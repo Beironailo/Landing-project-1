@@ -30,8 +30,10 @@ function initWebSocket(url) {
 
         userWebSocket.onmessage = function (event) {
 
-            let text = event.data.text;
-            let date = event.data.date;
+            let eventObject = JSON.parse(event.data);
+
+            let text = eventObject.text;
+            let date = eventObject.date;
 
             addMessage({
                 date: date,
