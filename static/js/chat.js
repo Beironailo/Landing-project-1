@@ -1,30 +1,31 @@
-let websocket;
+let userWebSocket;
+let adminWebSocket
 
 function initWebSocket(url) {
 
     try {
 
-        websocket = new WebSocket(url);
+        userWebSocket = new WebSocket(url);
 
-        websocket.onopen = function () {
+        userWebSocket.onopen = function () {
 
             console.log("WebSocket opened");
 
         }
 
-        websocket.onclose = function (event) {
+        userWebSocket.onclose = function (event) {
 
             console.log("WebSocket closed: " + event.code);
 
         }
 
-        websocket.onerror = function (error) {
+        userWebSocket.onerror = function (error) {
 
             console.log("WebSocket died:" + error.message);
 
         }
 
-        websocket.onmessage = function (event) {
+        userWebSocket.onmessage = function (event) {
 
             let text = event.data.text;
             let date = event.data.date;
@@ -54,7 +55,7 @@ function addMessage(message, source) {
                     text: message.text
                 }
 
-                websocket.send( JSON.stringify(json) );
+                userWebSocket.send( JSON.stringify(json) );
 
                 tag = "<div class=\"message-right\">" + message.text + "</div>";
 
@@ -121,13 +122,15 @@ document.querySelector(".chat_icon")
 document.querySelector(".chat_icon")
     .addEventListener("click", function () {
 
-        if (websocket == null) {
+        if (userWebSocket == null) {
             let room = document.querySelector("#room_name").innerHTML;
             let url = "ws://"
                 + window.location.host
                 + "/ws/chat/"
                 + room
                 + "/"
+
+            console.log(url);
             initWebSocket(url);
         }
 
