@@ -50,7 +50,7 @@ display: inline-block;
     border-color: transparent;
     border-style: solid;
     text-align: center;
-    z-index: 20;
+    z-index: 5;
 }
 .green-block{
 
@@ -60,7 +60,7 @@ display: inline-block;
     position: relative;
     left: 50%;
     top: 62px;
-    z-index: -2;
+    z-index: 10;
     transform: translateX(-50%);
 }
 .input-div{
