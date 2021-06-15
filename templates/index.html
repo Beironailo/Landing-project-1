@@ -152,31 +152,31 @@
 
 
 </div>
+
+<form method="post">
+
+{% csrf_token %}
 <div class="form-block">
 
 <div class="form" >
-
     <div class="input-div">
 
         <span>Телефон</span>
-        <select class="select" name="">
-<option value=""></option>
-        </select>
-    <input type="text" name="" value="" class="input" style="padding-left:105px;" placeholder="Phone number">
-
+        {{form.phone_number}}
 </div>
 <div class="input-div">
 
 <span>Email</span>
-    <input type="text" name="" value="" class="input" placeholder="Email">
+    {{form.email}}
     </div>
     <p style="font-size:22px;text-align:center; height:30; margin: 20;">Выберите удобный мессенджер</p>
 <div class="button-container">
-<a href="#" class="facebook-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-facebook.svg' %}"></div><div>Messenger</div></a>
-<a href="#" class="telegram-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-telegram.svg' %}"></div><div>Telegram</div></a>
-<a href="#" class="viber-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-viber.svg' %}"></div><div>Viber</div></a>
-
+<button name="messenger"  class="facebook-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-facebook.svg' %}"></div><div>Messenger</div></button>
+<button name="telegram" class="telegram-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-telegram.svg' %}"></div><div>Telegram</div></button>
+<button name ="viber" type="submit" class="viber-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-viber.svg' %}"></div><div>Viber</div></button>
 </div>
+</form>
+
 <div class ="footer">
 <div class="privacy">
 <input type="checkbox" class="inputcheckbox" id="check" >
