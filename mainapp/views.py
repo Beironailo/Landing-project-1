@@ -10,12 +10,12 @@ from .consumers import ChatConsumer
 class RegisterView(View):
     """Вносим в БД пользователя"""
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, room_name, *args, **kwargs):
         form = RegisterForm(request.POST)
-        context = {'form': form}
+        context = {'form': form, 'room_name': mark_safe(json.dumps(room_name))}
         return render(request, 'index.html', context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, room_name, *args, **kwargs):
         form = RegisterForm(request.POST or None)
         if form.is_valid():
             email = form.cleaned_data['email']
@@ -30,7 +30,7 @@ class RegisterView(View):
             form.messenger = messenger
             form.save()
             form = RegisterForm()
-        return render(request, 'index.html', {'form': form})
+        return render(request, 'index.html', {'form': form, 'room_name': mark_safe(json.dumps(room_name))})
 
 
 def index(request, room_name):
