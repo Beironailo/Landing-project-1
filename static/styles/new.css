@@ -104,6 +104,8 @@ display: inline-block;
     left: 43px;
     border: 0;
     background-color: #f1f1f1;
+    width: 105px;
+    height: 48px;
 }
 
 .button-container{
