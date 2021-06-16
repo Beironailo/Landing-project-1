@@ -10,12 +10,12 @@ from .consumers import ChatConsumer
 class RegisterView(View):
     """Вносим в БД пользователя"""
 
-    def get(self, request, room_name, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         form = RegisterForm(request.POST)
-        context = {'form': form, 'room_name': mark_safe(json.dumps(room_name))}
+        context = {'form': form}
         return render(request, 'index.html', context)
 
-    def post(self, request, room_name, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         form = RegisterForm(request.POST or None)
         if form.is_valid():
             email = form.cleaned_data['email']
@@ -30,16 +30,8 @@ class RegisterView(View):
             form.messenger = messenger
             form.save()
             form = RegisterForm()
-        return render(request, 'index.html', {'form': form, 'room_name': mark_safe(json.dumps(room_name))})
+        return render(request, 'index.html', {'form': form})
 
-
-def index(request, room_name):
-    """Страница чата"""
-    """Комната для чата в форме http://127.0.0.1:8000/chat/s/"""
-    # if room_name in ChatConsumer.rooms:
-    #     context = {'room_name_json': mark_safe(json.dumps(room_name)), 'log': ChatConsumer.rooms[room_name]['log']}
-    #     return render(request, 'userchat.html', context)
-    return render(request, 'index.html', {'room_name': mark_safe(json.dumps(room_name))})
 
 
 def admin_chat(request):

@@ -19,13 +19,13 @@
     const roomName = {{ room_name }}
 
     var adminSocket = new ReconnectingWebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
             + '/ws/chat/'
     );
 
     var chatSocket = new ReconnectingWebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
             + '/ws/chat/'
             + roomName

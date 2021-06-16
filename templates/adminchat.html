@@ -42,12 +42,12 @@
         }
     }
     var adminSocket = new ReconnectingWebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
             + '/ws/chat/'
     );
     var chatSocket = new ReconnectingWebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
             + '/ws/chat/pass'
             )
@@ -88,7 +88,7 @@
             }
         document.querySelector('#text-input').focus();
         chatSocket = new ReconnectingWebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
             + '/ws/chat/'
             + room +'/'
