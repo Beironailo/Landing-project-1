@@ -171,9 +171,9 @@
     </div>
     <p style="font-size:22px;text-align:center; height:30px; margin: 20px;">Выберите удобный мессенджер</p>
 <div class="button-container">
-<button name="messenger" type="submit" class="facebook-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-facebook.svg' %}"></div><div>Messenger</div></button>
-<button name="telegram" type="submit" class="telegram-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-telegram.svg' %}"></div><div>Telegram</div></button>
-<button name ="viber" type="submit" class="viber-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-viber.svg' %}"></div><div>Viber</div></button>
+<button name="messenger" onclick="event.preventDefault()" type="submit" class="facebook-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-facebook.svg' %}"></div><div>Messenger</div></button>
+<button name="telegram"  onclick="event.preventDefault()" type="submit" class="telegram-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-telegram.svg' %}"></div><div>Telegram</div></button>
+<button name ="viber"  onclick="event.preventDefault()" type="submit" class="viber-button"><div class="icon"> <img alt="icon" src = "{% static 'imgs\lgt-icon-viber.svg' %}"></div><div>Viber</div></button>
 </div>
 </form>
 
