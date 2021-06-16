@@ -5,6 +5,13 @@ import sys
 
 
 def main():
+    port = int(os.environ.get("PORT", 8000))
+
+    print("Started. PORT = ", port)
+
+    from django.core.management.commands.runserver import Command as runserver
+    runserver.default_port = port
+
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Landing.settings')
     try:
@@ -20,3 +27,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
