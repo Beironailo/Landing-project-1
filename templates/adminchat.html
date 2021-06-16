@@ -14,7 +14,7 @@
     {% if rooms %}
     {% for room in rooms%}
     <div><textarea readonly rows="3" cols="50" id = "room_{{room}}"></textarea>
-        <button id = "button_{{room}}" onclick="button_catch('{{room}}')">Open</button>
+        <button id = "button_{{room}}">Open</button>
     </div>
     {% endfor %}
     {% endif %}
@@ -51,9 +51,6 @@
             + window.location.host
             + '/ws/chat/pass'
             )
-    chatSocket.onopen = function(e) {
-        console.log("connect");
-    }
 
     adminSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
@@ -63,7 +60,7 @@
             + data['text'];
         if (room in rooms){
             document.querySelector('#room_' + room).value = message;
-            rooms[room].push(data['user'],data['time'],data['text']);
+            rooms[room].push([data['user'],data['time'],data['text']]);
         }
         else {
         const rooms_field = document.getElementById("rooms_block");
@@ -76,16 +73,19 @@
         textarea.setAttribute('id', "room_" + room);
         textarea.appendChild(document.createTextNode(message));
         button.setAttribute('id', "button_" + room);
-        button.setAttribute('onclick', "button_catch('" + room + "')");
         button.appendChild(document.createTextNode("Open"));
         new_field.appendChild(textarea);
         new_field.appendChild(button);
         rooms_field.appendChild(new_field);
         rooms[room] = [[data['user'],data['time'],data['text']]];
-        }
-        };
-
-    function button_catch(room){
+        button.onclick = function (){
+        console.log('clicked');
+        chatSocket.close();
+        document.querySelector('#text-log').value = '';
+        for (let i = 0; i < rooms[room].length; i++){
+            document.querySelector('#text-log').value +=rooms[room][i][0] + '('+ rooms[room][i][1]+'): '
+             + rooms[room][i][2] + '\n';
+            }
         document.querySelector('#text-input').focus();
         chatSocket = new ReconnectingWebSocket(
             'ws://'
@@ -95,20 +95,19 @@
             )
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
+            rooms[room].push([data['user'],data['time'],data['text']]);
+
             const message = data['user'] + '(' + data['time'] + '): '
             + data['text'];
             document.querySelector('#text-log').value += message + '\n';
             document.querySelector('#room_' + room).value = message;
         };
 
-        document.querySelector('#text-log').value = '';
-        console.log(rooms[room])
-        for (var i = 0; i < rooms[room].length; i++){
-            document.querySelector('#text-log').value +=rooms[room][i][0] + '('+ rooms[room][i][1]+'): '
-             + rooms[room][i][2] + '\n';
-            }
+        }
         }
 
+        console.log(rooms[room]);
+        };
     document.querySelector('#send-button').onclick = function(e) {
         var messageInputDom = document.querySelector('#text-input');
         var message = messageInputDom.value;
